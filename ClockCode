@@ -1,0 +1,106 @@
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
+export default function InteractiveClock() {
+  const [time, setTime] = useState(new Date());
+  const [stopwatch, setStopwatch] = useState(0);
+  const [timer, setTimer] = useState(60);
+  const [isStopwatchRunning, setIsStopwatchRunning] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    let stopwatchInterval;
+    if (isStopwatchRunning) {
+      stopwatchInterval = setInterval(() => {
+        setStopwatch((prev) => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(stopwatchInterval);
+  }, [isStopwatchRunning]);
+
+  useEffect(() => {
+    let timerInterval;
+    if (isTimerRunning && timer > 0) {
+      timerInterval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timerInterval);
+  }, [isTimerRunning, timer]);
+
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6">
+      {/* Analog Clock */}
+      <div className="relative w-48 h-48 border-8 border-white rounded-full flex items-center justify-center shadow-lg bg-gray-800">
+        <motion.div
+          className="absolute w-1 h-16 bg-red-500 origin-bottom"
+          animate={{ rotate: seconds * 6 }}
+          transition={{ type: "spring", stiffness: 100 }}
+        />
+        <motion.div
+          className="absolute w-1 h-12 bg-white origin-bottom"
+          animate={{ rotate: minutes * 6 }}
+          transition={{ type: "spring", stiffness: 100 }}
+        />
+        <motion.div
+          className="absolute w-1 h-8 bg-yellow-500 origin-bottom"
+          animate={{ rotate: (hours % 12) * 30 }}
+          transition={{ type: "spring", stiffness: 100 }}
+        />
+      </div>
+      {/* Digital Clock */}
+      <motion.div
+        className="text-6xl font-bold mt-6 p-3 bg-white text-gray-900 rounded-lg shadow-xl"
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 1, repeat: Infinity }}
+      >
+        {hours.toString().padStart(2, "0")}:
+        {minutes.toString().padStart(2, "0")}:
+        {seconds.toString().padStart(2, "0")}
+      </motion.div>
+      {/* Stopwatch */}
+      <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg text-center">
+        <div className="text-2xl">Stopwatch: {stopwatch}s</div>
+        <button
+          className="mt-2 p-3 bg-green-500 rounded-full shadow-md hover:bg-green-600 transition"
+          onClick={() => setIsStopwatchRunning(!isStopwatchRunning)}
+        >
+          {isStopwatchRunning ? "Pause" : "Start"}
+        </button>
+        <button
+          className="mt-2 ml-2 p-3 bg-red-500 rounded-full shadow-md hover:bg-red-600 transition"
+          onClick={() => setStopwatch(0)}
+        >
+          Reset
+        </button>
+      </div>
+      {/* Timer */}
+      <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-lg text-center">
+        <div className="text-2xl">Timer: {timer}s</div>
+        <button
+          className="mt-2 p-3 bg-blue-500 rounded-full shadow-md hover:bg-blue-600 transition"
+          onClick={() => setIsTimerRunning(!isTimerRunning)}
+        >
+          {isTimerRunning ? "Pause" : "Start"}
+        </button>
+        <button
+          className="mt-2 ml-2 p-3 bg-red-500 rounded-full shadow-md hover:bg-red-600 transition"
+          onClick={() => setTimer(60)}
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}
