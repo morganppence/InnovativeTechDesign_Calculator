@@ -1,0 +1,74 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
+import { Banana, Pizza, IceCream, Candy } from "lucide-react";
+
+export default function FoodCalculator() {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
+
+  const handleClick = (value) => {
+    setInput((prev) => prev + value);
+  };
+
+  const calculateResult = () => {
+    try {
+      setResult(eval(input).toString());
+    } catch {
+      setResult("Error");
+    }
+  };
+
+  const clearInput = () => {
+    setInput("");
+    setResult("");
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-yellow-50 p-4">
+      <Card className="w-full max-w-md bg-orange-100 shadow-xl p-4 rounded-2xl">
+        <CardContent>
+          <Input
+            className="text-2xl text-center bg-white p-2 rounded-lg"
+            value={input}
+            readOnly
+          />
+          <div className="text-right text-2xl font-bold text-green-700 mt-2">{result}</div>
+          <div className="grid grid-cols-4 gap-2 mt-4">
+            {["7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3", "*", "0", ".", "=", "/"].map((item) => (
+              <Button
+                key={item}
+                className="p-4 text-lg rounded-full bg-red-200 hover:bg-red-300 shadow-lg"
+                onClick={() => (item === "=" ? calculateResult() : handleClick(item))}
+              >
+                {item}
+              </Button>
+            ))}
+            <Button
+              className="col-span-2 p-4 text-lg rounded-full bg-green-200 hover:bg-green-300 shadow-lg"
+              onClick={clearInput}
+            >
+              C
+            </Button>
+          </div>
+          <div className="flex justify-around mt-4">
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ rotate: 360, scale: 1.5 }}>
+              <Banana size={32} className="text-yellow-500" />
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ rotate: 360, scale: 1.5 }}>
+              <Pizza size={32} className="text-orange-600" />
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ rotate: 360, scale: 1.5 }}>
+              <IceCream size={32} className="text-blue-400" />
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ rotate: 360, scale: 1.5 }}>
+              <Candy size={32} className="text-pink-500" />
+            </motion.div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
