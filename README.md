@@ -18,9 +18,16 @@ https://github.com/user-attachments/assets/96fb8783-a498-4415-959d-bcf0773054ec
 - Claude.ai
 - Sublime
 
-
 # What I Learned 
 - UI/UX Design: I gained experience in designing visually appealing and thematically engaging user interfaces.
 - Animations: I was able to leard about Framer Motion which helped me add a fun, interactive feel to UI elements.
 
-Creativity in Coding: This project allowed me to experiment with whimsical themes and apply technical skills in a fun way!
+- Creativity in Coding: This project allowed me to experiment with whimsical themes and apply technical skills in a fun way!
+
+
+
+#Extra Credit Clock 
+
+
+https://github.com/user-attachments/assets/0b261d80-fc2c-4d48-a3c1-9b74b817b875
+
